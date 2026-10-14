@@ -2,7 +2,7 @@ import argparse
 from loguru import logger
 from src.datasets.xinhua import get_task_datasets
 from evaluator import BaseEvaluator
-from src.llms import GPT
+# from src.llms import GPT
 from src.llms import Qwen_7B_Chat
 from src.tasks.summary import Summary
 from src.tasks.continue_writing import ContinueWriting
@@ -99,11 +99,11 @@ task_mapping = {
 if args.task not in task_mapping:
     raise ValueError(f"Unknown task: {args.task}")
 
-tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in task_mapping[args.task]]
+# tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in task_mapping[args.task]]
 
-datasets = get_task_datasets(args.data_path, args.task)
+# datasets = get_task_datasets(args.data_path, args.task)
 
-for task, dataset in zip(tasks, datasets):
-    evaluator = BaseEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
-    evaluator.run(show_progress_bar=args.show_progress_bar, contain_original_data=args.contain_original_data)
-
+# for task, dataset in zip(tasks, datasets):
+#     evaluator = BaseEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
+#     evaluator.run(show_progress_bar=args.show_progress_bar, contain_original_data=args.contain_original_data)
+# TODO: 暂时不Evaluate
