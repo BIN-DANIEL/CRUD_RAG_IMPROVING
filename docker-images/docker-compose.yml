@@ -1,5 +1,13 @@
 version: '3.5'
 
+# Milvus Standalone 编排文件
+# 说明：
+#   1. MinIO 不再作为容器运行，改由宿主机上的 minio 二进制提供服务。
+#   2. 本机当前没有 docker compose 插件，实际启动请用项目根目录的
+#      start_service.sh（它用等价的 docker run 命令启动）。
+#   3. 本文件保留作为标准配置参考；若后续安装了 docker compose，可
+#      用 `docker compose -f docker-images/docker-compose.yml up -d` 启动。
+
 services:
   etcd:
     container_name: milvus-etcd
@@ -10,28 +18,10 @@ services:
       - ETCD_QUOTA_BACKEND_BYTES=4294967296
       - ETCD_SNAPSHOT_COUNT=50000
     volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/etcd:/etcd
+      - ../volumes/etcd:/etcd
     command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:2379/health"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
-
-  minio:
-    container_name: milvus-minio
-    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
-    environment:
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-    ports:
-      - "9001:9001"
-      - "9000:9000"
-    volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/minio:/minio_data
-    command: minio server /minio_data --console-address ":9001"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
       timeout: 20s
       retries: 3
@@ -44,9 +34,12 @@ services:
     - seccomp:unconfined
     environment:
       ETCD_ENDPOINTS: etcd:2379
-      MINIO_ADDRESS: minio:9000
+      # 连接宿主机上运行的 minio 二进制（start_service.sh 负责启动）
+      MINIO_ADDRESS: host.docker.internal:9000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
-      - ${DOCKER_VOLUME_DIRECTORY:-.}/volumes/milvus:/var/lib/milvus
+      - ../volumes/milvus:/var/lib/milvus
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
       interval: 30s
@@ -58,7 +51,6 @@ services:
       - "9091:9091"
     depends_on:
       - "etcd"
-      - "minio"
 
 networks:
   default:

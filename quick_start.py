@@ -22,7 +22,7 @@ parser.add_argument('--max_new_tokens', type=int, default=1280, help="Maximum nu
 parser.add_argument('--data_path', default='data/crud_split/split_merged.json', help="Path to the dataset")
 parser.add_argument('--shuffle', type=bool, default=True, help="Whether to shuffle the dataset")
 
-parser.add_argument('--embedding_name', default='sentence-transformers/bge-base-zh-v1.5')
+parser.add_argument('--embedding_name', default='BAAI/bge-base-zh-v1.5')
 parser.add_argument('--embedding_dim', type=int, default=768)
 
 # Index related options
@@ -47,16 +47,35 @@ parser.add_argument('--task', default='event_summary', help="Task to perform")
 parser.add_argument('--num_threads', type=int, default=1, help="Number of threads")
 parser.add_argument('--show_progress_bar', action='store', default=True, type=bool, help="Whether to show a progress bar")
 parser.add_argument('--contain_original_data', action='store_true', help="Whether to contain original data")
-
+parser.add_argument('--proxy_on', action='store_true', help="Whether to use proxy")
+parser.add_argument('--musa', action='store_true', help="Run embedding on MUSA GPU")
 args = parser.parse_args()
 logger.info(args)
+
+if args.proxy_on:
+    import os
+    os.environ["https_proxy"] = "http://127.0.0.1:7897"
+    os.environ["http_proxy"] = "http://127.0.0.1:7897"
+
+if args.musa:
+    import torch
+    import torch_musa  # 注册 MUSA backend，使 torch.device('musa') 可用
+    device = 'musa'
+    embed_model_kwargs = {"torch_dtype": torch.float16}  # fp16 加速 embedding
+else:
+    device = None
+    embed_model_kwargs = {}
 
 if args.model_name.startswith("gpt"):
     llm = GPT(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens)
 elif args.model_name == "qwen7b":
-    llm = Qwen_7B_Chat(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens)
+    # 建索引阶段不需要加载 Qwen-7B，跳过（需要推理时再取消注释）
+    # llm = Qwen_7B_Chat(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens)
+    llm = None
 
-embed_model = HuggingfaceEmbeddings(model_name=args.embedding_name)
+embed_model = HuggingfaceEmbeddings(
+    model_name=args.embedding_name, device=device, model_kwargs=embed_model_kwargs
+)
 
 if args.retriever_name == "base":
     retriever = BaseRetriever(

@@ -11,3 +11,5 @@ torch
 elasticsearch
 FlagEmbedding
 rouge_score
+einops
+faiss-cpu

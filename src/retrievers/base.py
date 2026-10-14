@@ -1,4 +1,5 @@
 from abc import ABC
+import os
 
 from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader, get_response_synthesizer
 from llama_index.retrievers import VectorIndexRetriever
@@ -10,7 +11,9 @@ from llama_index import download_loader
 from llama_index.embeddings import LangchainEmbedding
 from llama_index import ServiceContext, StorageContext
 from langchain.schema.embeddings import Embeddings
-from llama_index.vector_stores import MilvusVectorStore
+import faiss
+from llama_index.vector_stores import FaissVectorStore
+from llama_index import load_index_from_storage
 
 
 class BaseRetriever(ABC):
@@ -33,11 +36,15 @@ class BaseRetriever(ABC):
         self.chunk_overlap = chunk_overlap
         self.collection_name = collection_name
         self.similarity_top_k = similarity_top_k
+        # 持久化目录：src/index_vector_storage/{collection_name}
+        self.persist_dir = os.path.join(
+            os.path.dirname(__file__), '..', 'index_vector_storage', collection_name
+        )
 
         if construct_index:
             self.construct_index()
         else:
-            self.load_index_from_milvus()
+            self.load_index_from_faiss()
         
         if add_index:
             self.add_index()
@@ -64,26 +71,16 @@ class BaseRetriever(ABC):
         service_context = ServiceContext.from_defaults(
             embed_model=self.embed_model,llm=None,
         )
-        vector_store = MilvusVectorStore(
-            dim=self.embed_dim, overwrite=True,
-            collection_name=self.collection_name
-        )
+        faiss_index = faiss.IndexFlatL2(self.embed_dim)
+        vector_store = FaissVectorStore(faiss_index=faiss_index)
         storage_context = StorageContext.from_defaults(vector_store=vector_store)
         
-        # Process and index nodes in chunks due to Milvus limitations
-        for spilt_ids in range(0, len(nodes), 8000):  
-            self.vector_index = GPTVectorStoreIndex(
-                nodes[spilt_ids:spilt_ids+8000], service_context=service_context, 
-                storage_context=storage_context, show_progress=True
-            )
-            print(f"Indexing of part {spilt_ids} finished!")
-
-            vector_store = MilvusVectorStore(
-                overwrite=False,
-                collection_name=self.collection_name
-            )
-            storage_context = StorageContext.from_defaults(vector_store=vector_store)
-
+        self.vector_index = GPTVectorStoreIndex(
+            nodes, service_context=service_context, 
+            storage_context=storage_context, show_progress=True
+        )
+        # 持久化到本地目录
+        self.vector_index.storage_context.persist(persist_dir=self.persist_dir)
         print("Indexing finished!")
 
     def add_index(self):
@@ -102,33 +99,27 @@ class BaseRetriever(ABC):
         service_context = ServiceContext.from_defaults(
             embed_model=self.embed_model,llm=None,
         )
-        vector_store = MilvusVectorStore(
-            overwrite=False,
-            collection_name=self.collection_name
-        )
+        faiss_index = faiss.IndexFlatL2(self.embed_dim)
+        vector_store = FaissVectorStore(faiss_index=faiss_index)
         storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
-         # Process and index nodes in chunks due to Milvus limitations
-        for spilt_ids in range(0, len(nodes), 8000):  
-            self.vector_index = GPTVectorStoreIndex(
-                nodes[spilt_ids:spilt_ids+8000], service_context=service_context, 
-                storage_context=storage_context, show_progress=True
-            )
-            print(f"Indexing of part {spilt_ids} finished!")
+        self.vector_index = GPTVectorStoreIndex(
+            nodes, service_context=service_context, 
+            storage_context=storage_context, show_progress=True
+        )
+        self.vector_index.storage_context.persist(persist_dir=self.persist_dir)
 
         print("Indexing finished!")
-
-    def load_index_from_milvus(self):
-        vector_store =  MilvusVectorStore(
-            overwrite=False, dim=self.embed_dim, 
-            collection_name=self.collection_name
+    
+    def load_index_from_faiss(self):
+        vector_store = FaissVectorStore.from_persist_dir(self.persist_dir)
+        storage_context = StorageContext.from_defaults(
+            persist_dir=self.persist_dir,
+            vector_store=vector_store,
         )
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
-        service_context = ServiceContext.from_defaults(embed_model=self.embed_model, llm=None)
-        self.vector_index = GPTVectorStoreIndex(
-            [], storage_context=storage_context, 
-            service_context=service_context,
-        )
+        embed_model = LangchainEmbedding(self.embed_model)
+        service_context = ServiceContext.from_defaults(embed_model=embed_model, llm=None)
+        self.vector_index = load_index_from_storage(storage_context, service_context=service_context)
 
     def search_docs(self, query_text: str):
         response_vector = self.query_engine.query(query_text)

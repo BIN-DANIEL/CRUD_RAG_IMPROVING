@@ -9,7 +9,7 @@ import numpy as np
 from langchain.schema.embeddings import Embeddings
 from pydantic.dataclasses import dataclass
 
-DEFAULT_MODEL_NAME = "sentence-transformers/bge-base-zh-v1.5"
+DEFAULT_MODEL_NAME = "BAAI/bge-base-zh-v1.5"
 
 @dataclass
 class HuggingfaceEmbeddings(Embeddings):
@@ -21,6 +21,9 @@ class HuggingfaceEmbeddings(Embeddings):
     model_kwargs: t.Dict[str, t.Any] = field(default_factory=dict)
     """Keyword arguments to pass to the model."""
     encode_kwargs: t.Dict[str, t.Any] = field(default_factory=dict)
+    """Keyword arguments to pass to the model."""
+    device: t.Optional[str] = None
+    """Device to run the model on, e.g. 'musa' or 'cpu'. None means auto-detect."""
 
     def __post_init__(self):
         try:
@@ -44,11 +47,12 @@ class HuggingfaceEmbeddings(Embeddings):
 
         if self.is_cross_encoder:
             self.model = sentence_transformers.CrossEncoder(
-                self.model_name, **self.model_kwargs
+                self.model_name, device=self.device, model_kwargs=self.model_kwargs
             )
         else:
             self.model = sentence_transformers.SentenceTransformer(
-                self.model_name, cache_folder=self.cache_folder, **self.model_kwargs
+                self.model_name, cache_folder=self.cache_folder, device=self.device,
+                model_kwargs=self.model_kwargs
             )
 
         # ensure outputs are tensors

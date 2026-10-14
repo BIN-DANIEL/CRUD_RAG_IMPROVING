@@ -10,3 +10,20 @@ real_config*
 merged.json
 *.sh
 学习笔记.md
+volumes/
+
+# 生成的索引与测试数据（体积大，不纳入版本控制）
+src/index_vector_storage/
+data/test_docs/
+
+# 日志文件
+*.log
+
+# 部署二进制/镜像（体积大，超 GitHub 限制）
+docker-images/*.tar
+docker-images/minio/
+third_party_tools/mihomo
+third_party_tools/crane
+
+# 运行时缓存
+third_party_tools/clash/cache.db

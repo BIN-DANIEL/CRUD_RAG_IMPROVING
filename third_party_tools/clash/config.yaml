@@ -1,0 +1,210 @@
+mixed-port: 7897
+allow-lan: false
+mode: rule
+log-level: info
+ipv6: false
+unified-delay: true
+
+hosts:
+  0bc52bj2-10e0.aws-agent.org: bad18bj2-1f25.apt-agent.org
+  e3585sh0-3ad5.aws-agent.org: 9a558sh8-8de9.apt-agent.org
+  fd025gz8-c617.aws-agent.org: b36d5gz0-2ac1.apt-agent.org
+
+proxies:
+  - {name: "🇭🇰 香港实验性 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 10012, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡实验性 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 10032, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港高级 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 12006, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港高级 IEPL 专线 2", server: fd025gz8-c617.aws-agent.org, port: 12008, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港高级 IEPL 专线 3", server: fd025gz8-c617.aws-agent.org, port: 12009, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡高级 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 12036, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡高级 IEPL 专线 2", server: fd025gz8-c617.aws-agent.org, port: 12038, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡高级 IEPL 专线 3", server: fd025gz8-c617.aws-agent.org, port: 12039, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇳 台湾高级 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 12046, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇳 台湾高级 IEPL 专线 2", server: fd025gz8-c617.aws-agent.org, port: 12048, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇳 台湾高级 IEPL 专线 3", server: fd025gz8-c617.aws-agent.org, port: 12049, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11003, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 2", server: fd025gz8-c617.aws-agent.org, port: 11006, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 3", server: fd025gz8-c617.aws-agent.org, port: 11007, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 4", server: fd025gz8-c617.aws-agent.org, port: 11001, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 5", server: fd025gz8-c617.aws-agent.org, port: 11005, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 6", server: fd025gz8-c617.aws-agent.org, port: 11002, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 7", server: fd025gz8-c617.aws-agent.org, port: 11004, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇰 香港标准 IEPL 专线 8", server: fd025gz8-c617.aws-agent.org, port: 11008, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11033, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 2", server: fd025gz8-c617.aws-agent.org, port: 11036, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 3", server: fd025gz8-c617.aws-agent.org, port: 11037, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 4", server: fd025gz8-c617.aws-agent.org, port: 11031, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 5", server: fd025gz8-c617.aws-agent.org, port: 11035, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 6", server: fd025gz8-c617.aws-agent.org, port: 11032, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 7", server: fd025gz8-c617.aws-agent.org, port: 11034, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇸🇬 新加坡标准 IEPL 专线 8", server: fd025gz8-c617.aws-agent.org, port: 11038, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇳 台湾标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11043, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇳 台湾标准 IEPL 专线 2", server: fd025gz8-c617.aws-agent.org, port: 11041, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇳 台湾标准 IEPL 专线 3", server: fd025gz8-c617.aws-agent.org, port: 11042, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇦🇺 澳大利亚标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11069, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇳🇿 新西兰标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11070, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇮🇩 印尼标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11073, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇹🇭 泰国标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11074, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇻🇳 越南标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11075, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇮🇳 印度标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11080, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇵🇰 巴基斯坦标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11081, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇦🇪 阿联酋标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11083, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇵🇭 菲律宾标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11084, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇲🇾 马来西亚标准 IEPL 专线 1", server: fd025gz8-c617.aws-agent.org, port: 11085, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本实验性 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 10022, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国实验性 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 10052, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本高级 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 12016, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本高级 IEPL 专线 2", server: e3585sh0-3ad5.aws-agent.org, port: 12018, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本高级 IEPL 专线 3", server: e3585sh0-3ad5.aws-agent.org, port: 12019, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国高级 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 12026, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国高级 IEPL 专线 2", server: e3585sh0-3ad5.aws-agent.org, port: 12028, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国高级 IEPL 专线 3", server: e3585sh0-3ad5.aws-agent.org, port: 12029, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11013, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 2", server: e3585sh0-3ad5.aws-agent.org, port: 11016, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 3", server: e3585sh0-3ad5.aws-agent.org, port: 11017, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 4", server: e3585sh0-3ad5.aws-agent.org, port: 11011, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 5", server: e3585sh0-3ad5.aws-agent.org, port: 11015, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 6", server: e3585sh0-3ad5.aws-agent.org, port: 11012, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 7", server: e3585sh0-3ad5.aws-agent.org, port: 11014, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇯🇵 日本标准 IEPL 专线 8", server: e3585sh0-3ad5.aws-agent.org, port: 11018, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11023, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 2", server: e3585sh0-3ad5.aws-agent.org, port: 11026, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 3", server: e3585sh0-3ad5.aws-agent.org, port: 11027, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 4", server: e3585sh0-3ad5.aws-agent.org, port: 11021, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 5", server: e3585sh0-3ad5.aws-agent.org, port: 11025, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 6", server: e3585sh0-3ad5.aws-agent.org, port: 11022, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 7", server: e3585sh0-3ad5.aws-agent.org, port: 11024, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇸 美国标准 IEPL 专线 8", server: e3585sh0-3ad5.aws-agent.org, port: 11028, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇦 加拿大标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11064, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇦 加拿大标准 IEPL 专线 2", server: e3585sh0-3ad5.aws-agent.org, port: 11065, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇦🇷 阿根廷标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11066, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇧🇷 巴西标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11067, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇨🇱 智利标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11068, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇰🇷 韩国标准 IEPL 专线 1", server: e3585sh0-3ad5.aws-agent.org, port: 11071, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇰🇷 韩国标准 IEPL 专线 2", server: e3585sh0-3ad5.aws-agent.org, port: 11072, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇲🇩 摩尔多瓦标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11050, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇺🇦 乌克兰标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11051, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇮🇹 意大利标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11052, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇭🇺 匈牙利标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11053, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇪🇸 西班牙标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11054, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇹🇷 土耳其标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11055, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇩🇪 德国标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11056, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇩🇪 德国标准 IEPL 专线 2", server: 0bc52bj2-10e0.aws-agent.org, port: 11057, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇬🇧 英国标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11058, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇬🇧 英国标准 IEPL 专线 2", server: 0bc52bj2-10e0.aws-agent.org, port: 11059, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇳🇱 荷兰标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11060, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇳🇱 荷兰标准 IEPL 专线 2", server: 0bc52bj2-10e0.aws-agent.org, port: 11061, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇫🇷 法国标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11062, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇫🇷 法国标准 IEPL 专线 2", server: 0bc52bj2-10e0.aws-agent.org, port: 11063, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇮🇱 以色列标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11082, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇪🇬 埃及标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11086, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+  - {name: "🇳🇬 尼日利亚标准 IEPL 专线 1", server: 0bc52bj2-10e0.aws-agent.org, port: 11087, type: ss, cipher: aes-128-gcm, password: Sj10bnYDe7w6V29E, plugin: obfs, plugin-opts: {mode: http, host: 948ad6f79e.m.ctrip.com}, udp: false}
+
+proxy-groups:
+  - name: PROXY
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 50
+    proxies:
+      - "🇭🇰 香港实验性 IEPL 专线 1"
+      - "🇸🇬 新加坡实验性 IEPL 专线 1"
+      - "🇭🇰 香港高级 IEPL 专线 1"
+      - "🇭🇰 香港高级 IEPL 专线 2"
+      - "🇭🇰 香港高级 IEPL 专线 3"
+      - "🇸🇬 新加坡高级 IEPL 专线 1"
+      - "🇸🇬 新加坡高级 IEPL 专线 2"
+      - "🇸🇬 新加坡高级 IEPL 专线 3"
+      - "🇨🇳 台湾高级 IEPL 专线 1"
+      - "🇨🇳 台湾高级 IEPL 专线 2"
+      - "🇨🇳 台湾高级 IEPL 专线 3"
+      - "🇭🇰 香港标准 IEPL 专线 1"
+      - "🇭🇰 香港标准 IEPL 专线 2"
+      - "🇭🇰 香港标准 IEPL 专线 3"
+      - "🇭🇰 香港标准 IEPL 专线 4"
+      - "🇭🇰 香港标准 IEPL 专线 5"
+      - "🇭🇰 香港标准 IEPL 专线 6"
+      - "🇭🇰 香港标准 IEPL 专线 7"
+      - "🇭🇰 香港标准 IEPL 专线 8"
+      - "🇸🇬 新加坡标准 IEPL 专线 1"
+      - "🇸🇬 新加坡标准 IEPL 专线 2"
+      - "🇸🇬 新加坡标准 IEPL 专线 3"
+      - "🇸🇬 新加坡标准 IEPL 专线 4"
+      - "🇸🇬 新加坡标准 IEPL 专线 5"
+      - "🇸🇬 新加坡标准 IEPL 专线 6"
+      - "🇸🇬 新加坡标准 IEPL 专线 7"
+      - "🇸🇬 新加坡标准 IEPL 专线 8"
+      - "🇨🇳 台湾标准 IEPL 专线 1"
+      - "🇨🇳 台湾标准 IEPL 专线 2"
+      - "🇨🇳 台湾标准 IEPL 专线 3"
+      - "🇦🇺 澳大利亚标准 IEPL 专线 1"
+      - "🇳🇿 新西兰标准 IEPL 专线 1"
+      - "🇮🇩 印尼标准 IEPL 专线 1"
+      - "🇹🇭 泰国标准 IEPL 专线 1"
+      - "🇻🇳 越南标准 IEPL 专线 1"
+      - "🇮🇳 印度标准 IEPL 专线 1"
+      - "🇵🇰 巴基斯坦标准 IEPL 专线 1"
+      - "🇦🇪 阿联酋标准 IEPL 专线 1"
+      - "🇵🇭 菲律宾标准 IEPL 专线 1"
+      - "🇲🇾 马来西亚标准 IEPL 专线 1"
+      - "🇯🇵 日本实验性 IEPL 专线 1"
+      - "🇺🇸 美国实验性 IEPL 专线 1"
+      - "🇯🇵 日本高级 IEPL 专线 1"
+      - "🇯🇵 日本高级 IEPL 专线 2"
+      - "🇯🇵 日本高级 IEPL 专线 3"
+      - "🇺🇸 美国高级 IEPL 专线 1"
+      - "🇺🇸 美国高级 IEPL 专线 2"
+      - "🇺🇸 美国高级 IEPL 专线 3"
+      - "🇯🇵 日本标准 IEPL 专线 1"
+      - "🇯🇵 日本标准 IEPL 专线 2"
+      - "🇯🇵 日本标准 IEPL 专线 3"
+      - "🇯🇵 日本标准 IEPL 专线 4"
+      - "🇯🇵 日本标准 IEPL 专线 5"
+      - "🇯🇵 日本标准 IEPL 专线 6"
+      - "🇯🇵 日本标准 IEPL 专线 7"
+      - "🇯🇵 日本标准 IEPL 专线 8"
+      - "🇺🇸 美国标准 IEPL 专线 1"
+      - "🇺🇸 美国标准 IEPL 专线 2"
+      - "🇺🇸 美国标准 IEPL 专线 3"
+      - "🇺🇸 美国标准 IEPL 专线 4"
+      - "🇺🇸 美国标准 IEPL 专线 5"
+      - "🇺🇸 美国标准 IEPL 专线 6"
+      - "🇺🇸 美国标准 IEPL 专线 7"
+      - "🇺🇸 美国标准 IEPL 专线 8"
+      - "🇨🇦 加拿大标准 IEPL 专线 1"
+      - "🇨🇦 加拿大标准 IEPL 专线 2"
+      - "🇦🇷 阿根廷标准 IEPL 专线 1"
+      - "🇧🇷 巴西标准 IEPL 专线 1"
+      - "🇨🇱 智利标准 IEPL 专线 1"
+      - "🇰🇷 韩国标准 IEPL 专线 1"
+      - "🇰🇷 韩国标准 IEPL 专线 2"
+      - "🇲🇩 摩尔多瓦标准 IEPL 专线 1"
+      - "🇺🇦 乌克兰标准 IEPL 专线 1"
+      - "🇮🇹 意大利标准 IEPL 专线 1"
+      - "🇭🇺 匈牙利标准 IEPL 专线 1"
+      - "🇪🇸 西班牙标准 IEPL 专线 1"
+      - "🇹🇷 土耳其标准 IEPL 专线 1"
+      - "🇩🇪 德国标准 IEPL 专线 1"
+      - "🇩🇪 德国标准 IEPL 专线 2"
+      - "🇬🇧 英国标准 IEPL 专线 1"
+      - "🇬🇧 英国标准 IEPL 专线 2"
+      - "🇳🇱 荷兰标准 IEPL 专线 1"
+      - "🇳🇱 荷兰标准 IEPL 专线 2"
+      - "🇫🇷 法国标准 IEPL 专线 1"
+      - "🇫🇷 法国标准 IEPL 专线 2"
+      - "🇮🇱 以色列标准 IEPL 专线 1"
+      - "🇪🇬 埃及标准 IEPL 专线 1"
+      - "🇳🇬 尼日利亚标准 IEPL 专线 1"
+
+rules:
+  - MATCH,PROXY
+
+dns:
+  enable: true
+  listen: 127.0.0.1:7874
+  ipv6: false
+  enhanced-mode: redir-host
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - https://dns.pub/dns-query
