@@ -2,13 +2,14 @@ import argparse
 from loguru import logger
 from src.datasets.xinhua import get_task_datasets
 from evaluator import BaseEvaluator
-# from src.llms import GPT
-from src.llms import Qwen_7B_Chat
+from src.llms import GPT
+from src.llms import Qwen_7B_Chat, Qwen_14B_Chat
 from src.tasks.summary import Summary
 from src.tasks.continue_writing import ContinueWriting
 from src.tasks.hallucinated_modified import HalluModified
 from src.tasks.quest_answer import QuestAnswer1Doc, QuestAnswer2Docs, QuestAnswer3Docs
 from src.retrievers import BaseRetriever, CustomBM25Retriever, EnsembleRetriever, EnsembleRerankRetriever
+from src.retrievers.bm25_rewrite import CustomBM25RetrieverJieba
 from src.embeddings.base import HuggingfaceEmbeddings
 
 parser = argparse.ArgumentParser()
@@ -49,6 +50,7 @@ parser.add_argument('--show_progress_bar', action='store', default=True, type=bo
 parser.add_argument('--contain_original_data', action='store_true', help="Whether to contain original data")
 parser.add_argument('--proxy_on', action='store_true', help="Whether to use proxy")
 parser.add_argument('--musa', action='store_true', help="Run embedding on MUSA GPU")
+parser.add_argument('--num_samples', type=int, default=None, help="Only evaluate the first N samples (None = all)")
 args = parser.parse_args()
 logger.info(args)
 
@@ -69,9 +71,10 @@ else:
 if args.model_name.startswith("gpt"):
     llm = GPT(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens)
 elif args.model_name == "qwen7b":
-    # 建索引阶段不需要加载 Qwen-7B，跳过（需要推理时再取消注释）
-    # llm = Qwen_7B_Chat(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens)
-    llm = None
+    llm = Qwen_7B_Chat(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens, device=device)
+elif args.model_name == "qwen14b":
+    llm = Qwen_14B_Chat(model_name=args.model_name, temperature=args.temperature, max_new_tokens=args.max_new_tokens, device=device)
+
 
 embed_model = HuggingfaceEmbeddings(
     model_name=args.embedding_name, device=device, model_kwargs=embed_model_kwargs
@@ -88,8 +91,17 @@ elif args.retriever_name == "bm25":
     retriever = CustomBM25Retriever(
         args.docs_path, embed_model=embed_model, chunk_size=args.chunk_size, 
         construct_index=args.construct_index,
-        chunk_overlap=args.chunk_overlap, similarity_top_k=args.retrieve_top_k
+        chunk_overlap=args.chunk_overlap, similarity_top_k=args.retrieve_top_k,
+        collection_name=args.collection_name
     )
+elif args.retriever_name == "bm25_jieba":
+    retriever = CustomBM25RetrieverJieba(
+        args.docs_path, embed_model=embed_model, chunk_size=args.chunk_size,
+        construct_index=args.construct_index,
+        chunk_overlap=args.chunk_overlap, similarity_top_k=args.retrieve_top_k,
+        collection_name=args.collection_name
+    )
+
 elif args.retriever_name == "hybrid":
     retriever = EnsembleRetriever(
         args.docs_path, embed_model=embed_model, embed_dim=args.embedding_dim,
@@ -118,11 +130,14 @@ task_mapping = {
 if args.task not in task_mapping:
     raise ValueError(f"Unknown task: {args.task}")
 
-# tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in task_mapping[args.task]]
+tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in task_mapping[args.task]]
 
-# datasets = get_task_datasets(args.data_path, args.task)
+datasets = get_task_datasets(args.data_path, args.task)
 
-# for task, dataset in zip(tasks, datasets):
-#     evaluator = BaseEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
-#     evaluator.run(show_progress_bar=args.show_progress_bar, contain_original_data=args.contain_original_data)
-# TODO: 暂时不Evaluate
+# 可选：只跑前 N 条样本（可行性验证时用，避免全量耗时）
+if args.num_samples is not None:
+    datasets = [ds[:args.num_samples] for ds in datasets]
+
+for task, dataset in zip(tasks, datasets):
+    evaluator = BaseEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
+    evaluator.run(show_progress_bar=args.show_progress_bar, contain_original_data=args.contain_original_data)

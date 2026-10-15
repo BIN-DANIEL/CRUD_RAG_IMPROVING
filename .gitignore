@@ -7,6 +7,7 @@ tmp/
 bash
 tmp*
 real_config*
+src/configs/config.py
 merged.json
 *.sh
 学习笔记.md
@@ -14,7 +15,9 @@ volumes/
 
 # 生成的索引与测试数据（体积大，不纳入版本控制）
 src/index_vector_storage/
+src/bm25_storage/
 data/test_docs/
+experiments/
 
 # 日志文件
 *.log

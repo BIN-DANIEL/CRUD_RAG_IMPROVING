@@ -45,15 +45,21 @@ class HuggingfaceEmbeddings(Embeddings):
             )
         )
 
+        # sentence-transformers 2.x 的 SentenceTransformer/CrossEncoder 不支持 model_kwargs，
+        # 而是通过 device 参数直接指定设备。torch_dtype（fp16）需要构造后手动 .to() 转换。
         if self.is_cross_encoder:
             self.model = sentence_transformers.CrossEncoder(
-                self.model_name, device=self.device, model_kwargs=self.model_kwargs
+                self.model_name, device=self.device
             )
         else:
             self.model = sentence_transformers.SentenceTransformer(
-                self.model_name, cache_folder=self.cache_folder, device=self.device,
-                model_kwargs=self.model_kwargs
+                self.model_name, cache_folder=self.cache_folder, device=self.device
             )
+
+        # fp16：从 model_kwargs 里提取 torch_dtype，构造后手动转换精度（2.x 无 model_kwargs 传参）
+        torch_dtype = self.model_kwargs.get("torch_dtype")
+        if torch_dtype is not None:
+            self.model = self.model.to(torch_dtype)
 
         # ensure outputs are tensors
         if "convert_to_tensor" not in self.encode_kwargs:

@@ -9,12 +9,18 @@ except ImportError:
 from src.llms.base import BaseLLM
 
 class Qwen_7B_Chat(BaseLLM):
-    def __init__(self, model_name='qwen_7b', temperature=1.0, max_new_tokens=1024):
+    def __init__(self, model_name='qwen_7b', temperature=1.0, max_new_tokens=1024, device=None):
         super().__init__(model_name, temperature, max_new_tokens)
         local_path = conf.Qwen_7B_local_path
+        self.device = device
         self.tokenizer = AutoTokenizer.from_pretrained(
             local_path, trust_remote_code=True)
-        self.model = AutoModelForCausalLM.from_pretrained(local_path, device_map="auto",
+        if device == 'musa':
+            # MUSA 不支持 device_map="auto"，手动 .to('musa')
+            self.model = AutoModelForCausalLM.from_pretrained(
+                local_path, trust_remote_code=True).eval().to('musa')
+        else:
+            self.model = AutoModelForCausalLM.from_pretrained(local_path, device_map="auto",
                                                      trust_remote_code=True).eval()
         self.gen_kwargs = {
             "temperature": self.params['temperature'],
@@ -26,8 +32,11 @@ class Qwen_7B_Chat(BaseLLM):
 
     def request(self, query: str) -> str:
         query = "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\n{}<|im_end|>\n<|im_start|>assistant\n".format(query)
-        input_ids = self.tokenizer.encode(query, return_tensors="pt").cuda()
-        output = self.model.generate(input_ids, **self.gen_kwargs)[0]
+        input_ids = self.tokenizer.encode(query, return_tensors="pt")
+        input_ids = input_ids.to('musa') if self.device == 'musa' else input_ids.cuda()
+        gen_out = self.model.generate(input_ids, **self.gen_kwargs)
+        # 兼容不同 transformers 版本：新版返回 GenerateDecoderOnlyOutput(.sequences)，旧版返回纯 Tensor
+        output = gen_out.sequences[0] if hasattr(gen_out, 'sequences') else gen_out[0]
         response = self.tokenizer.decode(
             output[len(input_ids[0]) - len(output):], skip_special_tokens=True)
         return response
@@ -54,7 +63,8 @@ class Baichuan2_13B_Chat(BaseLLM):
     
     def request(self, query: str) -> str:
         input_ids = self.tokenizer.encode(query, return_tensors="pt").cuda()
-        output = self.model.generate(input_ids, **self.gen_kwargs)[0]
+        gen_out = self.model.generate(input_ids, **self.gen_kwargs)
+        output = gen_out.sequences[0] if hasattr(gen_out, 'sequences') else gen_out[0]
         response = self.tokenizer.decode(
             output[len(input_ids[0]) - len(output):], skip_special_tokens=True)
         return response
@@ -81,19 +91,26 @@ class ChatGLM3_6B_Chat(BaseLLM):
     
     def request(self, query: str) -> str:
         input_ids = self.tokenizer.encode(query, return_tensors="pt").cuda()
-        output = self.model.generate(input_ids, **self.gen_kwargs)[0]
+        gen_out = self.model.generate(input_ids, **self.gen_kwargs)
+        output = gen_out.sequences[0] if hasattr(gen_out, 'sequences') else gen_out[0]
         response = self.tokenizer.decode(
             output[len(input_ids[0]) - len(output):], skip_special_tokens=True)
         return response
 
 
 class Qwen_14B_Chat(BaseLLM):
-    def __init__(self, model_name='qwen_14b', temperature=1.0, max_new_tokens=1024):
+    def __init__(self, model_name='qwen_14b', temperature=1.0, max_new_tokens=1024, device=None):
         super().__init__(model_name, temperature, max_new_tokens)
         local_path = conf.Qwen_14B_local_path
+        self.device = device
         self.tokenizer = AutoTokenizer.from_pretrained(
             local_path, trust_remote_code=True)
-        self.model = AutoModelForCausalLM.from_pretrained(local_path, device_map="auto",
+        if device == 'musa':
+            # MUSA 不支持 device_map="auto"，手动 .to('musa')
+            self.model = AutoModelForCausalLM.from_pretrained(
+                local_path, trust_remote_code=True).eval().to('musa')
+        else:
+            self.model = AutoModelForCausalLM.from_pretrained(local_path, device_map="auto",
                                                      trust_remote_code=True).eval()
         self.gen_kwargs = {
             "temperature": self.params['temperature'],
@@ -105,8 +122,10 @@ class Qwen_14B_Chat(BaseLLM):
 
     def request(self, query: str) -> str:
         query = "<|im_start|>system\nYou are a helpful assistant.<|im_end|>\n<|im_start|>user\n{}<|im_end|>\n<|im_start|>assistant\n".format(query)
-        input_ids = self.tokenizer.encode(query, return_tensors="pt").cuda()
-        output = self.model.generate(input_ids, **self.gen_kwargs)[0]
+        input_ids = self.tokenizer.encode(query, return_tensors="pt")
+        input_ids = input_ids.to('musa') if self.device == 'musa' else input_ids.cuda()
+        gen_out = self.model.generate(input_ids, **self.gen_kwargs)
+        output = gen_out.sequences[0] if hasattr(gen_out, 'sequences') else gen_out[0]
         response = self.tokenizer.decode(
             output[len(input_ids[0]) - len(output):], skip_special_tokens=True)
         return response

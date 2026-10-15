@@ -1,14 +1,12 @@
 from abc import ABC
 
-from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader, get_response_synthesizer
+from llama_index import SimpleDirectoryReader
 from llama_index.node_parser import SimpleNodeParser
-from llama_index.vector_stores import ElasticsearchStore
 
-from llama_index.embeddings import LangchainEmbedding
-from llama_index import ServiceContext, StorageContext
 from langchain.schema.embeddings import Embeddings
 from llama_index import QueryBundle
 from elasticsearch import Elasticsearch
+from elasticsearch.helpers import bulk
 
 
 class CustomBM25Retriever(ABC):
@@ -35,35 +33,37 @@ class CustomBM25Retriever(ABC):
         self.es_port = es_port
         self.es_scheme = es_scheme
 
-        if construct_index:
-            self.construct_index()
-
+        # 先建立 ES 连接（construct_index 里 bulk 写入要用到 self.es_client）
         self.es_client = Elasticsearch([{'host': self.es_host, 'port': self.es_port, "scheme": self.es_scheme}])
         print("Elasticsearch connected!")
 
+        if construct_index:
+            self.construct_index()
+
     def construct_index(self):
+        # 【改动说明】
+        # 原版走 GPTVectorStoreIndex + ElasticsearchStore，会对每个 chunk 算 embedding 存向量，
+        # 但 search_docs 里用的是 ES 的 match 查询（BM25），根本没用到存进去的向量。
+        # 所以这里改成：只做分块 → 把 chunk 纯文本批量写入 ES 的 content 字段。
+        # ES 会用默认的 standard analyzer（对中文逐字切分）给 content 建倒排，
+        # 这正是 search_docs 里 match 查询依赖的东西，也是"论文 ES BM25"的真实检索基础。
         documents = SimpleDirectoryReader(self.docs_directory).load_data()
-        
+
         node_parser = SimpleNodeParser.from_defaults(
             chunk_size=self.chunk_size, chunk_overlap=self.chunk_overlap)
         nodes = node_parser.get_nodes_from_documents(documents, show_progress=True)
-        
-        self.embed_model = LangchainEmbedding(self.embed_model)
-        service_context = ServiceContext.from_defaults(
-            embed_model=self.embed_model,llm=None,
+
+        # 用 ES 原生 bulk 批量写入，每条记录存 chunk 文本到 content 字段
+        actions = (
+            {"_index": self.collection_name, "_source": {"content": node.text}}
+            for node in nodes
         )
-        vector_store = ElasticsearchStore(
-            index_name=self.collection_name, es_url=f"{self.es_scheme}://{self.es_host}:{self.es_port}"
-        )
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
-        
-        # Process and index nodes in chunks due to Milvus limitations
-        for spilt_ids in range(0, len(nodes), 8000):  
-            self.vector_index = GPTVectorStoreIndex(
-                nodes[spilt_ids:spilt_ids+8000], service_context=service_context, 
-                storage_context=storage_context, show_progress=True
-            )
-            print(f"Indexing of part {spilt_ids} finished!")
+        success, errors = bulk(self.es_client, actions, chunk_size=5000)
+        print(f"Bulk indexed {success} chunks, {len(errors)} errors.")
+
+        # 手动 refresh，让刚写入的数据立即可被检索
+        # （ES 默认 1 秒才自动 refresh，不手动刷会导致建库后立即 search 查不到）
+        self.es_client.indices.refresh(index=self.collection_name)
 
         print("Indexing finished!")
 
