@@ -13,7 +13,7 @@ from FlagEmbedding import FlagReranker
 
 
 def bge_rerank_result(query_text: str, docs: List[str], top_n):
-    reranker = FlagReranker('sentence-transformers/bge-rerank-base')
+    reranker = FlagReranker('BAAI/bge-reranker-base')
 
     scores = reranker.compute_score([[query_text, passage] for passage in docs])
     
@@ -32,6 +32,7 @@ class EnsembleRerankRetriever(ABC):
             chunk_size: int = 128,
             chunk_overlap: int = 0,
             collection_name: str = "docs",
+            bm25_collection_name: str = None,
             construct_index: bool = False,
             add_index: bool = False,
             similarity_top_k: int=2,
@@ -47,6 +48,8 @@ class EnsembleRerankRetriever(ABC):
         self.chunk_overlap = chunk_overlap
         self.collection_name = collection_name
         self.similarity_top_k = similarity_top_k
+        # BM25 索引命名与 FAISS 不同（bm_ 前缀 vs _bge 后缀），需独立传参
+        self.bm25_collection_name = bm25_collection_name or collection_name
 
         self.embedding_retriever = BaseRetriever(
             docs_directory, embed_model=embed_model, embed_dim=embed_dim,
@@ -58,6 +61,7 @@ class EnsembleRerankRetriever(ABC):
             docs_directory, embed_model=embed_model,
             chunk_size=chunk_size, chunk_overlap=chunk_overlap,
             similarity_top_k=similarity_top_k,
+            collection_name=self.bm25_collection_name,
         )
 
     def search_docs(self, query_text: str):

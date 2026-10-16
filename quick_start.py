@@ -1,4 +1,6 @@
 import argparse
+import os
+import sys
 from loguru import logger
 from src.datasets.xinhua import get_task_datasets
 from evaluator import BaseEvaluator
@@ -7,10 +9,14 @@ from src.llms import Qwen_7B_Chat, Qwen_14B_Chat
 from src.tasks.summary import Summary
 from src.tasks.continue_writing import ContinueWriting
 from src.tasks.hallucinated_modified import HalluModified
+from src.tasks.mem_hallucinated_modified import MemHalluModified
 from src.tasks.quest_answer import QuestAnswer1Doc, QuestAnswer2Docs, QuestAnswer3Docs
 from src.retrievers import BaseRetriever, CustomBM25Retriever, EnsembleRetriever, EnsembleRerankRetriever
 from src.retrievers.bm25_rewrite import CustomBM25RetrieverJieba
 from src.embeddings.base import HuggingfaceEmbeddings
+
+# memory 模块路径（供 --mem 时 import MemoryEvaluator 使用）
+MEMORY_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'memory')
 
 parser = argparse.ArgumentParser()
 
@@ -34,6 +40,7 @@ parser.add_argument('--chunk_overlap', type=int, default=0, help="Overlap chunk 
 parser.add_argument('--construct_index', action='store_true', help="Whether to construct an index")
 parser.add_argument('--add_index', action='store_true', default=False, help="Whether to add an index")
 parser.add_argument('--collection_name', default="docs_80k_chuncksize_128_0", help="Name of the collection")
+parser.add_argument('--bm25_collection_name', default=None, help="BM25 ES 索引名（hybrid 用，命名与 FAISS 不同）")
 
 # Retriever related options
 parser.add_argument('--retrieve_top_k', type=int, default=8, help="Top k documents to retrieve")
@@ -51,6 +58,7 @@ parser.add_argument('--contain_original_data', action='store_true', help="Whethe
 parser.add_argument('--proxy_on', action='store_true', help="Whether to use proxy")
 parser.add_argument('--musa', action='store_true', help="Run embedding on MUSA GPU")
 parser.add_argument('--num_samples', type=int, default=None, help="Only evaluate the first N samples (None = all)")
+parser.add_argument('--mem', action='store_true', help="Use memory-enhanced evaluator (MemoryEvaluator) with memory-version task")
 args = parser.parse_args()
 logger.info(args)
 
@@ -107,17 +115,25 @@ elif args.retriever_name == "hybrid":
         args.docs_path, embed_model=embed_model, embed_dim=args.embedding_dim,
         chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap,
         construct_index=args.construct_index, add_index=args.add_index,
-        collection_name=args.collection_name, similarity_top_k=args.retrieve_top_k
+        collection_name=args.collection_name, similarity_top_k=args.retrieve_top_k,
+        bm25_collection_name=args.bm25_collection_name
     )
 elif args.retriever_name == "hybrid-rerank":
     retriever = EnsembleRerankRetriever(
         args.docs_path, embed_model=embed_model, embed_dim=args.embedding_dim,
         chunk_size=args.chunk_size, chunk_overlap=args.chunk_overlap,
         construct_index=args.construct_index, add_index=args.add_index,
-        collection_name=args.collection_name, similarity_top_k=args.retrieve_top_k
+        collection_name=args.collection_name, similarity_top_k=args.retrieve_top_k,
+        bm25_collection_name=args.bm25_collection_name
     )
 else:
     raise ValueError(f"Unknown retriever: {args.retriever_name}")
+
+# 只建索引时，建完就退出，不进入评测流程
+# （否则 build_*.sh 传 --construct_index 会建完库后继续跑默认 task 的评测）
+if args.construct_index:
+    print("Indexing only mode: construct_index=True, skip evaluation.")
+    sys.exit(0)
 
 task_mapping = {
     'event_summary':[Summary],
@@ -127,10 +143,21 @@ task_mapping = {
     'all': [Summary, ContinueWriting, HalluModified, QuestAnswer1Doc, QuestAnswer2Docs, QuestAnswer3Docs]
 }
 
+# --mem 时：将 hallucination 任务切换到记忆版本
+mem_task_mapping = {
+    'hallu_modified': [MemHalluModified],
+    'all': [MemHalluModified],
+}
+
 if args.task not in task_mapping:
     raise ValueError(f"Unknown task: {args.task}")
 
-tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in task_mapping[args.task]]
+if args.mem:
+    if args.task not in mem_task_mapping:
+        raise ValueError(f"--mem 目前只支持 hallucination 任务，不支持: {args.task}")
+    tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in mem_task_mapping[args.task]]
+else:
+    tasks = [task(use_quest_eval=args.quest_eval, use_bert_score=args.bert_score_eval) for task in task_mapping[args.task]]
 
 datasets = get_task_datasets(args.data_path, args.task)
 
@@ -138,6 +165,15 @@ datasets = get_task_datasets(args.data_path, args.task)
 if args.num_samples is not None:
     datasets = [ds[:args.num_samples] for ds in datasets]
 
+# --mem 时，提前把 memory 目录加入 sys.path 并 import MemoryEvaluator
+if args.mem:
+    if MEMORY_DIR not in sys.path:
+        sys.path.insert(0, MEMORY_DIR)
+    from memory_evaluator import MemoryEvaluator
+
 for task, dataset in zip(tasks, datasets):
-    evaluator = BaseEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
+    if args.mem:
+        evaluator = MemoryEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
+    else:
+        evaluator = BaseEvaluator(task, llm, retriever, dataset, num_threads=args.num_threads)
     evaluator.run(show_progress_bar=args.show_progress_bar, contain_original_data=args.contain_original_data)

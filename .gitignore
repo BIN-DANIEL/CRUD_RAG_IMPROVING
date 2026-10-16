@@ -30,3 +30,15 @@ third_party_tools/crane
 
 # 运行时缓存
 third_party_tools/clash/cache.db
+
+# memory 运行时产物（数据库与日志每次运行都会变化）
+memory/memory.db
+memory/session_logs/
+
+# 临时验证/调试脚本与输出
+verify_do_sample_false.py
+nohup.out
+
+# clash 运行时数据与备份
+third_party_tools/clash/config.yaml.bak
+third_party_tools/clash/geoip.metadb
